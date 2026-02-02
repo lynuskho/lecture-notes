@@ -22,6 +22,7 @@ headheight=1in
 
 \newcommand{\cyc}[1]{\langle {#1} \rangle}
 \newcommand{\lcm}{\mathop{\text{lcm}}}
+\newcommand{\sgn}{\mathop{\text{sgn}}}
 \title{}
 \author{Lynus Kho}
 
@@ -605,7 +606,7 @@ Now the main theorem is easily proven.
 \begin{proof}
   Let $B_n$ denote the set of odd permutations in $S_n$. For an odd permutation $\alpha$, consider the function $f:B_n\to A_n$ defined by $f(\alpha) = (12) \alpha$. By cancellation properties we have $(12) \alpha = (12) \beta$ implies $\alpha = \beta$, so $f$ is an injection; in other words $|B_n| \leq |A_n|$.
 
-  Similarly the function $g: A_n \to B_n$ defined by $g(\beta) = (12) \beta$ is an injection and so $|A_n|\leq |B_n|$. From this we conclude $|A_n| = |B_n|$ and since $|A_n|\cap |B_n| = \emptyset$, we obtain $|A_n| = n!/2$.
+  Similarly the function $g: A_n \to B_n$ defined by $g(\beta) = (12) \beta$ is an injection and so $|A_n|\leq |B_n|$. From this we conclude $|A_n| = |B_n|$ and since $A_n\cap B_n = \emptyset$, we obtain $|A_n| = n!/2$.
 \end{proof}
 
 \begin{remark}
@@ -702,4 +703,33 @@ There are names for special kinds of homomorphisms.
   \end{equation*}
 \end{proof}
 
+\begin{definition}
+  The group $\overline{G} = \Set{\pi_g \given g \in G}$ acting on the set $G$ in Cayley's Theorem is called the \textit{left regular representation of $G$}.
+\end{definition}
+\begin{remark}
+  This $\overline{G}$ can be identified as a subgroup of $S_{|G|}$. Hence each $\pi_{g}$ can be represented in disjoint cycle form.
+\end{remark}
+\begin{example}
+  The left regular representation for $U(12) = \{1,5,7,11\}$ can be obtained by writing the permutations of $U(12)$ in array form (much like a Cayley table):
+    \begin{equation*}
+      T_1 = \mat{1 & 5 & 7 & 11 \\ 1 & 5 & 7 & 11}, \quad 
+      T_5 = \mat{1 & 5 & 7 & 11 \\ 5 & 1 & 11 & 7}
+    \end{equation*}
+    \begin{equation*}
+      T_7 = \mat{1 & 5 & 7 & 11 \\ 7 & 11 & 1 & 5}, \quad 
+      T_{11} = \mat{1 & 5 & 7 & 11 \\ 11 & 7 & 5 & 1}
+    \end{equation*}
+    In cycle form we obtain:
+    \begin{equation*}
+      T_1 = (1),\quad T_5 = (1,5)(7,11),\quad T_7 = (1,7)(5,11),\quad T_{11} = (1,11)(5,7)
+    \end{equation*}
+\end{example}
+\begin{example}
+    Let $G$ be a group of order $2n$ where $n$ is odd. Prove that if $G$ has an element of order $2$, then $G$ has a subgroup of order $n$.
+\end{example}
+\begin{proof}
+    Let $a\in G$ with $|a|=2$. Viewing $G$ as a group of permutations, observe that since $\pi_a^{2} = e$, the permutation $\pi_a$ written in disjoint cycle form consists solely of transpositions. We cannot have a $1$-cycle, since that would imply $\pi_a$ sends an element to itself, which means $a=e$, a contradiction.
+
+    Thus, $\pi_a$ consists of $n$ transpositions, which means it is an odd permutation. Define $A:= \Set{\sigma\in \overline{G} \given \text{ $\sigma$ is even}}$ and $B:= \Set{\tau\in \overline{G} \given \text{ $\tau$ is odd}}$, the sets of odd and even permutations in $\overline{G}$. Then the mapping $\sigma \mapsto \pi_a \sigma$ is an injection from $A$ to $B$ and $\tau \mapsto \pi_{a} \tau$ is an injection from $B$ to $A$. Therefore, $|A| = |B| = n$ and in fact $A$ is a subgroup of order $n$, as desired.
+\end{proof}
 \end{document}
