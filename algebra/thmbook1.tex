@@ -1,0 +1,674 @@
+\documentclass[11pt, a4paper]{article}
+\usepackage[theorems,macros]{styles}
+\usepackage[
+nomarginpar,
+headheight=1in
+]{geometry}
+
+% --- Header and Footer Setup ---
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\fancyhead{} % clear all header fields
+\fancyhead[RO]{MATH 80.1}
+\fancyhead[LO]{Thmbook 1}
+\fancyfoot{} % clear all footer fields
+\fancyfoot[RO]{\thepage}
+\fancyfoot[C]{\leftmark}
+% \renewcommand{\headrulewidth}{0.4pt}
+% \renewcommand{\footrulewidth}{0pt}
+\setlength{\headsep}{1em}
+% --------------------------------------------- %
+\usepackage{tikz-cd}
+
+\newcommand{\cyc}[1]{\langle {#1} \rangle}
+\newcommand{\lcm}{\mathop{\text{lcm}}}
+\title{}
+\author{Lynus Kho}
+
+\allowdisplaybreaks
+
+\begin{document}
+\section{Recall}
+\begin{theorem}[Bezout's Identity]
+  Let $\text{gcd}(a,b) = d$. Then there exist integers $x$ and $y$ such that $ax+by =d$. Moreover, integers of the form $as+bt$ (i.e. linear combinations of $a,b$) are exactly the multiples of $d$. 
+\end{theorem}
+This theorem gives rise to an extremely important corollary:
+\begin{corollary}\label{cor:1}
+  Integers $a$ and $b$ are relatively prime (i.e. $\text{gcd}(a,b) = 1$) iff there exist $s,t\in \mathbb{Z}$ such that $as+bt=1$.
+\end{corollary}
+\begin{theorem}
+  Let $n,a$ be positive integers and let $d = \gcd(a,n)$. Then the equivalence
+  \begin{equation*}
+    ax \equiv 1 \pmod{n}
+  \end{equation*}
+  has a solution if and only if $d=1$.
+\end{theorem}
+\begin{proof}
+  We have
+  \begin{equation*}
+    ax \equiv 1 \pmod{n} \iff \exists k\in \Z,\;  ax = kn + 1 \iff \gcd(a,n)=1.
+  \end{equation*}
+\end{proof}
+\begin{remark}
+  We can consider $x$ as the inverse of $a$ under $U(n)$. Thus we can restate this as ``$a$ has an inverse $x$ iff $\gcd(a,n)=1$.'' This theorem justifies why the only members of $U(n)$ are those coprime to $n$.
+\end{remark}
+\begin{definition}[Euler's Totient Function]
+  Given a positive integer $n$, the function $\phi(n)$ counts the positive integers less than $n$ that are relatively prime to $n$. Formally,
+  \begin{equation*}
+  \phi(n) = \left|\left\{1\leq k \leq n \mid \text{gcd}(k,n)=1\right\}\right|.
+  \end{equation*}
+\end{definition}
+
+\begin{theorem}
+  Euler's Phi is a multiplicative function. That is, if $\gcd(m,n) = 1$ then $\phi(mn) = \phi(m) \phi(n)$.
+\end{theorem}
+\begin{theorem}\label{thm:phiprimepower}
+  Let $p$ be prime. Then $\phi (p^{n}) = p^{n} - p^{n-1}$.
+\end{theorem}
+
+\section{Groups}
+\begin{definition}
+    Let $G$ be a set. A \textit{binary operation} on $G$ is a function that assigns each ordered pair of elements of $G$ to an element of $G$.
+\end{definition}
+\begin{definition}
+  Let $G$ be a set together with a binary operation that assigns to each ordered pair $(a,b)$ of elements of $G$ to an element of $G$ denoted by $ab$. We say $G$ is a \textit{group} under this operation if the following three properties are satisfied.
+  \begin{enumerate}
+
+    \item \textit{Associativity}. We have $(ab)c = a(bc)$ for all $a,b,c$ in $G$.
+    \item \textit{Identity}. There is an element $e$ (called the \textit{identity}) in $G$ such that $ae=ea=a$ for all $a$ in $G$.
+    \item \textit{Inverses}. For each element $a$ in $G$, there is an element $b$ in $G$ (called an \textit{inverse} of $a$) such that $ab=ba=e$.
+
+  \end{enumerate}
+\end{definition}
+\begin{example}
+    The following are all examples of groups:
+    \begin{enumerate}
+
+        \item The sets $\Z, \Q, \R, \mathbb{C}$ are all groups under addition. In all cases the identity is $0$ and the inverse of $a$ is $-a$.
+        \item The set of positive rationals $\Q^{+}_{\times}$ is a group under ordinary multipication.
+        \item The set $\Z_n = \{0,1,\dots,n-1\}$ is a group under addition modulo $n$.
+        \item The set of $2 \times 2$ nonsingular matrices is called the \textit{general linear group} of $2 \times 2$ matrices over $\R$, denoted $\text{GL}(2,\R)$. This group is non-commutative.
+        \item Let $\mathbb{F}$ be a field, such as $\R, \C,$ or $\Z_p$. Then $\text{GL}(n,\mathbb{F})$ is a group for any positive integer $n\geq 1$, prime .
+        \item For any positive integer $n$, we define $U(n)$ to be the set of all positive integers less than $n$ and relatively prime to $n$. The operation is multiplication modulo $n$. This group is simply known as the \textit{multiplicative group of integers modulo} $n$.
+        \item Notice that in $U(8) = \Set{1,3,5,7}$, we have the property $3\cdot 5 = 7$, $5\cdot 7 = 3$, and $7 \cdot 3 = 5$. Thus $U(8)$ exhibits the properties of (i.e. is isomorphic to) the Klein-4 group.
+        \item Consider the symmetries of a regular $n$-gon with $n\geq 3$. The corresponding group is denoted $D_n$ and is called the \textit{dihedral group of order} $2n$. For instance, a square has symmetries $D_4 = \{R_{0},R_{90},R_{180},R_{270},H,V,D,D'\}$ and is called the dihedral group of order $8$. This group is non-commutative.
+
+    \end{enumerate}
+\end{example}
+\begin{definition}
+    A group with the property that $ab=ba$ for every pair of elements $a,b\in G$ is said to be \textit{Abelian}.
+\end{definition}
+\begin{theorem}
+    In a group, there is only one identity element.
+\end{theorem}
+\begin{proof}
+    Let $e,e'$ be identities in $G$. Then
+    \begin{enumerate}
+
+        \item $ae=a$ for all $a\in G$, and
+        \item $e'b=b$ for all $b\in G$.
+
+          Setting $a:= e'$ and $b:= e$ yields $e'e = e'$ and $e'e = e$, respectively, which proves the claim.
+    \end{enumerate}
+\end{proof}
+
+\begin{theorem}
+    In a group, right and left cancellation hold; that is, $ba=ca$ implies $b=c$, and $ab=ac$ implies $b=c$
+\end{theorem}
+\begin{theorem}
+    For each element $a$ in a group $G$, there is a unique element $a^{-1}$ in $G$ such that $aa^{-1} = a^{-1}a = e$.
+\end{theorem}
+
+\begin{definition}
+    Let $g$ be an element of a group $G$. If $n$ is positive, then we define
+    \begin{equation*}
+      g^{n} := \underbrace{gg\dots g}_{\text{$n$ factors}}.
+    \end{equation*}
+    if $n=0$, then $g^{0}:= e$, and if $n$ is negative,
+    \begin{equation*}
+      g^{n} := (g^{-1})^{|n|}.
+    \end{equation*}
+\end{definition}
+\begin{example}
+  For $(ab)^{-2}$ we have
+  \begin{equation*}
+    (ab)^{-2} = [(ab)^{-1}]^{2} = (b^{-1}a^{-1})^{2} = b^{-1}a^{-1}b^{-1}a^{-1}.
+  \end{equation*}
+  using the socks-and-shoes principle described later.
+\end{example}
+\begin{remark}
+    The order in which the $-1$ and the $|n|$ appears is not so important, since for positive $n$,
+    \begin{equation*}
+      g^{-n} = (g^{-1})^{n}
+    \end{equation*}
+    but clearly
+    \begin{equation*}
+      (g^{-1})^{n} g^{n} = e
+    \end{equation*}
+    and so 
+    \begin{equation*}
+      (g^{-1})^{n} = (g^{n})^{-1}.
+    \end{equation*}
+    
+\end{remark}
+\begin{theorem}
+    The laws of exponents hold, that is, for integers $m,n$ and any group element $g$, we have
+    \begin{enumerate}
+
+        \item $g^{m}g^{n} = g^{m+n}$
+        \item $(g^{m})^{n} = g^{mn}$.
+
+    \end{enumerate}
+\end{theorem}
+\begin{remark}
+  Note that in general, we \textbf{do not} have $(ab)^{n} = a^{n}b^{n}$. It is the case that
+  \begin{equation*}
+    (ab)^{n} = \underbrace{abab\dots ab}_{\text{$n$ times}}.
+  \end{equation*}
+\end{remark}
+\begin{theorem}[Socks and Shoes]
+  For group elements $a$ and $b$, $(ab)^{-1} = b^{-1}a^{-1}$.
+\end{theorem}
+\begin{theorem}[Pants, Socks and Shoes]
+  For group elements $a,b,c$ we have $(abc)^{-1} = c^{-1}b^{-1}a^{-1}$.
+\end{theorem}
+
+\begin{definition}[Cayley Table]
+  A \textit{Cayley table} for a group $G$ with $n$ elements is an $n \times n$ array where a row corresponds to an element $a$ in $G$, a column corresponds to an element $b$ in $G$, and the entry in the $a$-row and $b$-column is the product $ab$. 
+\end{definition}
+\begin{theorem}
+    In a Cayley table, each element in a group occurs exactly once in each row and each column.
+\end{theorem}
+\begin{proof}
+  If an element is in the $a$-row, then it is of the form $ax$ for some $x\in G$. Suppose $ax = ay$, i.e. the entry in $(a,x)$ is equal to the entry in $(a,y)$. Then by cancellation, $x=y$, so every entry in the row is unique. The same argument mutatis mutandis can be used to prove the uniqueness for columns.
+\end{proof}
+\begin{theorem}
+    Consider the Cayley table of $G$ as an $n \times n$ matrix. Then $G$ is Abelian iff its Cayley table is symmetric.
+\end{theorem}
+
+\section{Finite Groups and Subgroups}
+\begin{definition}
+    The number of elements $|G|$ of a group $G$ is called its \textit{order}.
+\end{definition}
+\begin{definition}
+    The \textit{order} of an element $g$ in a group $G$ is the smallest positive integer $n$ such that $g^{n} = e$. If no such integer exists, we set $g^{n} := \infty$. We denote the order of $g$ as $|g|$.
+\end{definition}
+
+\begin{definition}
+    If a subset $H$ of a group $G$ is itself a group under the operation of $G$, we say that $H$ is a \textit{subgroup} of $G$.
+\end{definition}
+\begin{definition}
+    If $H$ is a subgroup of $G$ but $H\neq G$, we say that $H$ is a \textit{proper subgroup of $G$}.
+\end{definition}
+\begin{definition}
+    The lattice of subgroups of a group $G$ is the lattice whose elements are the subgroups of $G$, with the partial ordering being set inclusion $\subseteq$.
+\end{definition}
+\begin{example}
+  For $U(15)$ we have the following lattice of subgroups:
+  \begin{figure}[htb!]
+    \centering
+    \begin{tikzcd}[every arrow/.append style={dash}]
+      &&U(15) \ar[d]\ar[dl]\ar[dr]\\
+      & \Set{1,2,4,8} \ar[dr] & \Set{1,4,11,14} \ar[dl] \ar[d] \ar[dr] &\Set{1,4,7,13}\ar[dl]\\
+      & \Set{1,11} \ar[dr] & \Set{1,4} \ar[d] & \Set{1,14} \ar[dl]\\
+      && \Set{1}
+    \end{tikzcd}
+    \label{fig:}
+  \end{figure}
+\end{example}
+\begin{theorem}[One-Step Subgroup Test]
+    Let $G$ be a group. Then a subset $H$ is a subgroup of $G$ if and only if the following hold:
+    \begin{enumerate}
+
+        \item $H$ is nonempty
+        \item If $a,b\in H$ then $ab^{-1}\in H$.
+
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+    Since the operation of $H$ is the same as in $G$, it is clear that this operation is associative. Now we show that $e\in H$. Since $H$ is nonempty, we can speak of an element $a\in H$. By premise, since $a\in H$ we know $aa^{-1}=e\in H$. Now let $x\in H$; we wish to show that $x^{-1}\in H$ as well. Take $a = e$ and $b= x$ in the premise: then $eb^{-1} = b^{-1} \in H$ as desired.
+\end{proof}
+
+\begin{theorem}[Two-Step Subgroup Test]
+    Let $G$ be a group. Then a subset $H$ is a subgroup of $G$ if and only if the following hold:
+    \begin{enumerate}
+
+        \item $H$ is nonempty.
+        \item If $a,b\in H$ then $ab\in H$.
+        \item If $a\in H$ then $a^{-1} \in H$.
+
+
+    \end{enumerate}
+\end{theorem}
+\begin{proof}
+  Notice we just need to show that $e\in H$. But this follows since $H$ is nonempty and $aa^{-1}=e\in H$ by (2) and (3).
+\end{proof}
+\begin{theorem}[Finite Subgroup Test]
+    Let $H$ be a nonempty finite subset of a group $G$. If $H$ is closed under the operation of $G$, then $H$ is a subgroup of $G$.
+\end{theorem}
+\begin{proof}
+  By the Two-Step Subgroup Test, we only need to prove (3), that $a^{-1}\in H$ whenever $a\in H$. If $a = e$, we are done, so suppose $a\neq e$ and consider the sequence
+  \begin{equation*}
+    a,a^{2},\dots.
+  \end{equation*}
+  By closure, all of these elements belong to $H$, but since $H$ is finite, not all of these elements are distinct. Say $a^{i} = a^{j}$ and WLOG $i>j$. Then $a^{i-j} = e$ and since $a\neq e$ we have $i-j > 1$. Therefore
+  \begin{equation*}
+      aa^{i-j-1} = a^{i-j}=e \implies a^{i-j-1} = a^{-1}.
+  \end{equation*}
+  But $i-j-1\geq 0$ implies $a^{i-j-1}\in H$ and we are done.
+\end{proof}
+
+\begin{definition}
+  A group $H$ is called \textit{cyclic} iff there is an element $a\in H$ such that $H = \{a^{n} \mid n\in \Z\}$. Such an element $a$ is called a \textit{generator} of $H$.
+
+  Let $G$ be a group and $a\in G$ a group element. We call $\langle a \rangle$ the \textit{cyclic subgroup of $G$ generated by $a$} defined by
+  \begin{align*}
+    \langle a \rangle :=& \Set{a^{n} \given n\in \Z} \\
+    =& \{ \dots, a^{-2},a^{-1},e,a,a^{2},\dots\}
+  \end{align*}
+\end{definition}
+
+\begin{theorem}
+    For any $a\in G$, $\langle a \rangle$ is a subgroup of $G$.
+\end{theorem}
+\begin{proof}
+    We use the One-Step Subgroup Test. Clearly $a\in \langle a\rangle$, so it is nonempty. Let $a^{i},a^{j} \in \langle a \rangle$. Then $a^{i}a^{-j} = a^{i-j} \in \langle a \rangle$ by laws of exponents.
+\end{proof}
+\begin{definition}
+    Let $S$ be a collection of elements from a group $G$. Then  we call $\langle S \rangle$ the \textit{subgroup generated by $S$}, defined as the smallest subgroup of $G$ containing $S$. More precisely, $\langle S \rangle$ is the subgroup with the property that $S\subseteq \langle S \rangle $, and if $S\subseteq H$, then $\langle S \rangle \subseteq H$.
+\end{definition}
+\begin{remark}
+  In linear algebra, this is simply the span.
+\end{remark}
+\begin{definition}
+  The center $Z(G)$ of a group $G$ is the subset of elements in $G$ that commute with every element of $G$, that is,
+  \begin{equation*}
+    Z(G) := \Set{ a\in G \given ax = xa \text{ for all }x\in G}.
+  \end{equation*}
+\end{definition} 
+\begin{theorem}
+    The center of a group $G$ is a subgroup of $G$.
+\end{theorem}
+\begin{proof}
+  We use the One-Step Subgroup Test. First, we have $ex=xe=x$ for all $x\in G$, so $e\in Z(G)$. Now let $a,b\in Z(G)$. Then for any $x\in G$
+  \begin{align*}
+    (ab^{-1})x &= b^{-1}(ax) \\
+    &= b^{-1}(ax)bb^{-1} \\
+    &= b^{-1}b(ax)b^{-1} \\
+    &= axb^{-1} \\
+    &= xab^{-1}
+  \end{align*}
+  and so $ab^{-1}\in Z(G)$, as desired.
+\end{proof}
+\begin{definition}
+  Let $a$ be a fixed element of a group $G$. The \textit{centralizer of $a$ in $G$}, denoted $C(a)$, is the set of all elements in $G$ that commute with $a$. In other words,
+  \begin{equation*}
+    C(a) := \Set{g\in G \given ga=ag}.
+  \end{equation*}
+\end{definition}
+\begin{theorem}
+  For each $a\in G$, $C(a)$ is a subgroup of $G$.
+\end{theorem}
+\begin{proof}
+    We use the same proof as above, modified slightly.
+\end{proof}
+
+\subsection{Some Useful Theorems}
+\begin{theorem}
+  Let $a,x$ be any group elements of $G$ and $n\in \Z$. Then we have
+  \begin{equation*}
+  (xax^{-1})^{n} = xa^{n}x^{-1}
+  \end{equation*}
+\end{theorem}
+
+\section{Cyclic Groups}
+We have already defined cyclic groups in the previous section. Here are some of their properties.
+\begin{theorem}\label{thm:criterion_for_ai_eq_aj}
+  Let $a\in G$. If $|a| = \infty$, then $a^{i} = a^{j}$ iff $i=j$. If $|a|=n\in \Z^{+}$, then $\cyc{a} = \Set{e,a,a^{2},\dots,a^{n-1}}$ and $a^{i}=a^{j}$ iff $n \mid i-j$.
+\end{theorem}
+\begin{proof}
+    Suppose first that $|a| = \infty$. Then if $a^{i} = a^{j}$, we must have $a^{i-j} = e$. Since $a$ has infinite order, it must be that $i=j$.
+
+    Now suppose $|a|=n < \infty$. That $\cyc{a} = \Set{e,a,a^{2},\dots, a^{n-1}}$ can be proven easily with the division algorithm. Now suppose $a^{i} = a^{j}$; we wish to show that $n \mid i-j$. Observe that $a^{i-j} = e$ and by the division algorithm, we can find integers $q,r$ such that
+    \begin{equation*}
+        i-j = nq + r, \qquad 0\leq r < n.
+    \end{equation*}
+    Thus $a^{i-j} = a^{nq+r} = a^{r}$ But $a^{i-j} = e$ and since $r<n$, it must be that $r = 0$ (otherwise $n$ is not the smallest integer such that $a^{n} = e$). Therefore, $i-j = nq$, that is, $n$ divides $i-j$.
+\end{proof}
+\begin{corollary}\label{cor:ak_eq_e_iff_ord_div_k}
+    We have $a^{k} = e$ if and only if $|a| \mid k$.
+\end{corollary}
+\begin{corollary}
+  We have $|\cyc{a^{k}}| = |a^{k}|$ for any integer $k$.
+\end{corollary}
+\begin{corollary}
+    If $a,b\in G$ where $|G|< \infty$ and $ab=ba$, then $|ab|$ divides $|a||b|$.
+\end{corollary}
+\begin{proof}
+  Let $|a| = m$ and $|b| = n$. Then $(ab)^{mn} = (a^{m})^{n}(b^{n})^{m} = e$ and so by the previous corollary, $|ab| \mid mn$.
+\end{proof}
+\begin{remark}
+  There is essentially only one cyclic group of each order. If $|a| = \infty$ then $\cyc{a} \cong \Z$, and if $|a| = n < \infty$ then $\cyc{a} \cong \Z_n$.
+\end{remark}
+
+\begin{theorem}\label{thm:ord_cyc_sub}
+  Let $|a| = n$. Then $\cyc{a^{k}} = \cyc{a^{\gcd(n,k)}}$ and $|a^{k}| = n / \gcd (n,k)$ for any integer $k$.
+\end{theorem}
+\begin{proof}
+  Write $d = \gcd (n,k)$ and let $k = dr$ for some integer $r$. Since $a^{k} = (a^{d})^{r}$, we have $\cyc{a^{k}} \subseteq \cyc{a^{d}}$ by closure. By \autoref{cor:1} we can find integers $s,t\in \Z$ such that $d = ns + kt$. So,
+  \begin{equation*}
+    a^{d} = a^{ns + kt} = ea^{kt} = (a^{k})^{t} \in \cyc{a^{k}}
+  \end{equation*}
+  which shows that $\cyc{a^{d}}\subseteq \cyc{a^{k}}$. Therefore $\cyc{a^{\gcd(n,k)}} = \cyc{a^{k}}$.
+
+  For the second part, notice that
+  \begin{align*}
+    |a^{k}| &= \min \Set{m\in \Z^{+} \given (a^{k})^{m} = e } \\
+    &= \min \Set{m \in \Z^{+} \given n \mid km} \\
+    &= \min \Set{m\in \Z^{+} \given km\text{ is a multiple of } n}
+  \end{align*}
+  and so $k |a^{k}| = \text{lcm}(n,k)$. Multiplying both sides by $\gcd(n,k)$ gives
+  \begin{align*}
+    k\gcd(n,k) |a^{k}| &= \gcd(n,k) \text{lcm}(n,k) \\
+    &= nk
+  \end{align*}
+  and so $|a^{k}| = n / \gcd(n,k)$, as desired.
+\end{proof}
+
+\begin{corollary}\label{cor:ord_sub_div_ord_grp}
+  In a finite cyclic group $\cyc{a}$, the order of an element divides the order of the group. In other words, if $|a| = n$ and $|a^{k}|=m$ then $m \mid n$.
+\end{corollary}
+\begin{corollary}
+  Let $|a| = n$. Then $\cyc{a^{i}} = \cyc{a^{j}}$ iff $\gcd(n,i) = \gcd(n,j)$.
+\end{corollary}
+\begin{corollary}\label{cor:generators_of_grp}
+  Let $|a|= n$. Then $\cyc{a} = \cyc{a^{j}}$ iff $\gcd(n,j) = 1$.
+\end{corollary}
+\begin{corollary}
+  An integer $k$ in $\Z_n$ is a generator of $\Z_n$ iff $\gcd(n,k) = 1$.
+\end{corollary}
+
+\subsection{Classification of Subgroups of Cyclic Groups}
+\begin{theorem}[Fundamental Theorem of Cyclic Groups]\label{thm:fund_cyc}
+  Every subgroup of a cyclic group is cyclic. Moreover, if $|a| =n$, then the order of any subgroup of $\cyc{a}$ is a divisor of $n$, and for each positive divisor $d$ of $n$, the group $\cyc{a}$ has exactly one subgroup of order $d$ --- namely $\cyc{a^{n/d}}$.
+\end{theorem}
+\begin{proof}
+    There are three claims in this theorem.
+    \begin{claim}\label{clm:1}
+        Every subgroup of a cyclic group is cyclic
+    \end{claim}
+    \begin{proof}[Proof of Claim]
+      Let $G= \cyc{a}$ and suppose $H$ is a subgroup of $G$. We want to show that $H$ is cyclic. If $H = \Set{e}$ then we are done, so suppose $a^{t}\in H$ for some $t\neq 0$. If $t< 0$ then $a^{-t}\in H$ as well since $H$ is a (sub)group, so there is always an $a^{t}\in H$ such that $t>0$.
+      
+      Now let $m$ be the least positive integer such that $a^{m}\in H$ (we needed to show that the set of such integers is nonempty). Let $a^{k}\in H$; we wish to show that $a^{k} \in \cyc{a^{m}}$. Note that $k\geq m$ by minimality, so we can use the division algorithm to write $k = pm + r$ for integers $p,0\leq r<m$. Then
+      \begin{equation*}
+          a^{k} = a^{pm}a^{r} = a^{r}.
+      \end{equation*}
+      But $r<m$, so we must have $r=0$ (otherwise $m$ is not minimal). So $a^{k} = (a^{m})^{p}$, i.e. $a^{k} \in \cyc{a^{m}}$.
+    \end{proof}
+    \begin{claim}
+      If $|a|=n$, then the order of any subgroup of $\cyc{a}$ is a divisor of $n$.
+    \end{claim}
+    \begin{proof}[Proof of Claim]
+      By the above \autoref{clm:1}, if $H$ is a subgroup of $\cyc{a}$ we can write $H = \cyc{a^{m}}$ for some positive integer $m$. If $|H| = k$ then by \autoref{cor:ord_sub_div_ord_grp} we have $k \mid n$.
+    \end{proof}
+    \begin{claim}
+      For each positive divisor $d$ of $|a|$, the group $\cyc{a}$ has exactly one subgroup of order $d$ --- namely $\cyc{a^{n/d}}$.
+    \end{claim}
+    \begin{proof}[Proof of Claim]
+      If $d$ is any positive divisor of $n$ then by \autoref{thm:ord_cyc_sub},
+      \begin{equation*}
+        |\cyc{a^{n/d}}| = \frac{n}{\gcd(n,n/d)}
+        = \frac{n}{n/d}
+        = d.
+        \end{equation*}
+      Thus there is at least one subgroup of order $d$. Suppose another subgroup $H$ is of order $d$. By \autoref{clm:1} $H = \cyc{a^{m}}$ for some positive $m \mid n$ and $|\cyc{a^{m}}| = n/m = d$. So $m = n/d$, i.e. $H = \cyc{a^{n/d}}$.
+    \end{proof}
+\end{proof}
+\begin{corollary}
+  For each positive divisor $d$ of $n$, the set $\cyc{a^{n/d}}$ is the unique subgroup of $\Z_n$ of order $d$. Moreover, these are the only subgroups of $\Z_n$.
+\end{corollary}
+\begin{corollary}\label{cor:no_elm_euler_phi}
+  The number of elements of order $d$ in a cyclic group of order $n$ is $\phi(d)$.
+\end{corollary}
+\begin{proof}
+  By \autoref{thm:fund_cyc} the group has a unique subgroup of order $d$, which we call $\cyc{a}$. Note that an element $g\in G$ has order $d$ iff $|\cyc{g}| = d$ and so $|g| = d \iff \cyc{g} = \cyc{a}$. By \autoref{cor:generators_of_grp} an element $a^{k}$ generates $\cyc{a}$ iff $\gcd(k,d) = 1$. There are exactly $\phi(d)$ such elements.
+\end{proof}
+\begin{remark}
+  The fundamental theorem can be used to exhaustively list all the subgroups of a finite cyclic group: they are exactly $\cyc{a^{d}}$ where $d$ is a divisor of $n = |a|$.
+\end{remark}
+\begin{corollary}
+  In a finite group (not necessarily cyclic!), the number of elements of order $d$ is a multiple of $\phi(d)$.
+\end{corollary}
+\begin{proof}
+  If a finite group has no elements of order $d$ then the statement is true, so let $a\in G$ with $|a| = d$. By \autoref{cor:no_elm_euler_phi} we know $\cyc{a}$ has $\phi(d)$ elements of order $d$. If all elements of order $d$ in $G$ are in $\cyc{a}$, then we are done, so suppose there is some $b\in G$ not in $\cyc{a}$. Then $\cyc{b}$ has $\phi(d)$ elements of order $d$ and we have found $2 \phi(d)$ elements of order $d$, provided that  $\cyc{a}$ and $\cyc{b}$ have no elements of order $d$ in common.
+
+  But this must be the case, otherwise if $c$ is such an element then $\cyc{a} = \cyc{c} = \cyc{b}$ (recall that elements of order $d$ generate the cyclic subgroup they are members of). Continuing in this fashion we see that the number of elements of order $d$ in a finite group is a multiple of $\phi(d)$.
+\end{proof}
+
+\section{Permutation Groups}
+\begin{definition}
+    A \textit{permutation} of a set $A$ is a bijection $f:A\to A$. A \textit{permutation group} of a set $A$ is a set of permutations of $A$ that forms a group under function composition.
+\end{definition}
+\begin{definition}
+  For a permutation $f$ of $\Set{1,\dots,n}$ we sometimes express $f$ in array form. So if $f(1) = 2$, $f(2) = 3$, $f(3) = 1$, and $f(4)=4$, we write
+  \begin{equation*}
+    f = \mat{1 & 2 & 3 & 4 \\ 2 & 3 & 1 & 4}.
+  \end{equation*}
+\end{definition}
+\begin{definition}
+  Let $A = \Set{1,\dots, n}$. The set of all permutations of $A$ is called the \textit{symmetric group of degree $n$} and is denoted by $S_n$. Clearly $|S_n| = n!$.
+\end{definition}
+\begin{theorem}
+    The symmetric group $S_n$ is non-Abelian if $n\geq 3$.
+\end{theorem}
+\begin{definition}
+  We can represent certain permutations $\alpha : \Set{1,\dots , n} \to \Set{ 1, \dots ,n }$ in cycle form. If $\alpha(1) = 2, \alpha(2) = 3, \dots , \alpha(n) = 1$, then we write
+  \begin{equation*}
+    \alpha = (123\dots n)
+  \end{equation*}
+\end{definition}
+\begin{definition}
+    Cycles of length 2 are often called \textit{transpositions}.
+\end{definition}
+\begin{theorem}
+    Every permutation of a finite set can be written as a cycle or as a product of disjoint cycles.
+\end{theorem}
+\begin{proof}
+  Note that in this case, the product refers to function composition. For a permutation $\alpha$ of $\Set{1,\dots,n}$ choose any member, say, $a_1$, and observe that
+  \begin{equation*}
+    (a_1,\alpha(a_1),\alpha^{2}(a_1),\dots)
+  \end{equation*}
+  is a finite cycle. Then simply choose an element $b_1$ not appearing in this cycle and continue the process, after which we obtain another cycle. These must be disjoint, otherwise we would have $\alpha^{i}(a_1) = \alpha^{j}(b_1)$ and so $b_1 = \alpha^{i-j}(a_1)$ which contradicts the way $b_1$ was chosen. Continuing in this manner we obtain a product of disjoint cycles.
+\end{proof}
+
+\begin{theorem}[Disjoint Cycles Commute]
+  If the pair of cycles $\alpha = (a_1, \dots, a_m)$ and $\beta = (b_1, \dots, b_n)$ have no entries in common, then $\alpha \beta = \beta \alpha$.
+\end{theorem}
+\begin{theorem}
+    The order of a permutation of a finite set written in disjoint cycle form is the least common multiple of the lengths of the cycles.
+\end{theorem}
+\begin{proof}
+  Observe that a cycle of length $n$ has order $n$ (clearest seen with a diagram). Let $|\alpha| = m$ and $|\beta| = n$ and set $k:=\lcm (m,n)$. It follows from \autoref{thm:criterion_for_ai_eq_aj} that both $\alpha^{k}$ and $\beta^{k}$ are the identity permutation $\varepsilon$ and, since $\alpha$ and $\beta$ commute, $(\alpha \beta)^{k} = \alpha^{k} \beta^{k}$ is also the identity.
+
+  Let $t = |\alpha \beta|$; we wish to show that $t = k$. By \autoref{cor:ak_eq_e_iff_ord_div_k} we know that $t \mid k$, so $k\geq t$. Now observe that since $\alpha$ and $\beta$ are disjoint, we know $\alpha^{t}$ fixes elements of $\beta$ and $\beta^{t}$ fixes elements of $\alpha$. Thus $\alpha^{t} \beta^{t}$ fixes $1$ through $n$ only when $\alpha^{t} = \beta^{t} = \varepsilon$. But this implies that $t$ is a multiple of both $m$ and $n$. Since $k= \lcm(m,n)$, we have $k\leq t$, and so we've shown that $k=t$, as desired.
+
+  We've actually only proved the case for two disjoint cycles, but this can be readily extended to the general case by a quick induction.
+\end{proof}
+\begin{example}
+    Determine all the orders of the $6!$ elements of $S_6$.
+\end{example}
+\begin{proof}[Solution]
+    We simply write out the possible disjoint cycle structures of the elements of $S_6$. We have
+    \begin{align*}
+      (6) \\
+      (5)(1) \\
+      (4)(2) \\
+      (4)(1)(1) \\
+      (3)(3) \\
+      (3)(2)(1) \\
+      (3)(1)(1)(1) \\
+      (2)(2)(2) \\
+      (2)(2)(1)(1) \\
+      (2)(1)(1)(1)(1) \\
+      (1)(1)(1)(1)(1)(1).
+   \end{align*}
+   From the above theorem we see that the orders of the elements of $S_6$ are $7,5,4,3,6,2,1$.
+\end{proof}
+\begin{theorem}
+  Every permutation in $S_n$, $n\geq 2$, is a product of $2$-cycles (or \textit{transpositions}).
+\end{theorem}
+\begin{proof}
+  Observe that $(a_1a_2\dots a_n)$ is equal to $(a_1a_k)(a_1a_{k-1})\dots(a_1a_2)$. Note that the identity can be written as $(12)(12)$.
+\end{proof}
+\begin{remark}
+    This is not the only way to write a permutation as a product of $2$-cycles. Observe that
+    \begin{equation*}
+      (12345) = (54)(53)(52)(51)
+    \end{equation*}
+    \begin{equation*}
+      (12345) = (54)(52)(21)(25)(23)(13)
+    \end{equation*}
+    so even the number of 2-cycles may vary.
+\end{remark}
+There is one aspect of a decomposition that never varies. To prove this we will prove a preliminary lemma.
+\begin{lemma}\label{lem:id_is_even}
+    If $\varepsilon = \beta_1 \beta_2 \dots \beta_r$, where the $\beta_i$'s are $2$-cycles, then $r$ is even.
+\end{lemma}
+\begin{proof}
+  The book's proof is rather convoluted. Here is a "standard" proof according to Gemini.
+
+  Consider a polynomial in $n$ variables $x_{1},x_{2},\dots , x_{n}$ defined as the product of all differences $(x_i-x_j)$ where $i<j$:
+  \begin{equation*}
+    P(x_{1},x_{2},\dots,x_{n}) := \prod_{1\leq i< j \leq n} (x_i - x_j).
+  \end{equation*}
+  (The astute observer may recognize this as the determinant of a Vandermode matrix). For any permutation $\sigma \in S_n$ we define the action of $\sigma$ on the polynomial $P$ by permuting the indices of the variables:
+  \begin{equation*}
+    \sigma (P) := \prod_{1\leq i<j \leq n} (x_{\sigma(i)} - x_{\sigma(j)}).
+  \end{equation*}
+  Since the set of factors in $\sigma(P)$ is the same as in $P$ except perhaps for its sign, we have $\sigma(P) = \pm P$. Now consider the effect of a transposition, say, $\tau = (k,l)$ with $k<l$, on $P$.
+  \begin{enumerate}
+
+    \item The factor $(x_{k}-x_{l})$ becomes $(x_{l}-x_{k})$ and so its sign is flipped.
+    \item For a fixed $m\neq k,l$ the factors $(x_m - x_k)$ and $(x_m - x_l)$ are a pair, possibly with inside terms ordered differently, come in pairs. Then $\tau$ merely swaps $x_{k}$ and $x_{l}$, leaving the sign unchanged.
+    \item The rest of the factors are unaffected by $\tau$, leaving the sign unchanged.
+
+  \end{enumerate}
+  Thus a transposition $\tau$ has the effect $\tau(P) = - P$. We are given that
+  \begin{equation*}
+      \varepsilon = \beta_1 \beta_{2} \dots \beta_r
+  \end{equation*}
+  with each $\beta$ a transposition. Then applying this to the polynomial $P$:
+  \begin{align*}
+    P = \epsilon(P) &= (\beta_1 \beta_2 \dots \beta_r)(P) \\
+    &= (-1)^{r}P
+  \end{align*}
+  and so $r$ must be even.
+\end{proof}
+\begin{remark}
+    The argument may not seem so convincing since we're using a specific case to find a property of the general $S_n$ group. It may help to think of the counterfactual: if we could express the identity as a product of an odd number of transpositions, apply it to the Vandermode polynomial and we would get a contradiction.
+\end{remark}
+Now the main theorem is easily proven.
+\begin{theorem}\label{thm:permutation_transposition_parity}
+  If a permutation $\alpha$ can be expressed as a product of an even (odd) number of transpositions, then every decomposition of $\alpha$ into a product of transpositions must have an even (odd) number of transpositions. In symbols, if
+  \begin{equation*}
+    \alpha = \beta_{1} \beta_{2} \dots \beta_{r}\quad\text{and}\quad \alpha = \gamma_{1} \gamma_{2} \dots \gamma_{s}
+  \end{equation*}
+  where the $\beta$'s and $\gamma$'s are transpositions, then $r$ and $s$ have the same parity.
+
+\end{theorem}
+\begin{proof}
+    Observe that $\beta_{1} \beta_{2} \dots \beta_{r}= \gamma_{1} \gamma_{2} \dots \gamma_{s}$ implies that
+    \begin{align*}
+      \varepsilon &= \gamma_{1} \gamma_2 \dots \gamma_s \beta^{-1}_r \dots \beta^{-1}_{2} \beta^{-1}_{1}  \\
+      &= \gamma_{1} \gamma_{2} \dots \gamma_{s} \beta_{r} \dots \beta_{2} \beta_{1}
+    \end{align*}
+    since a transposition is its own inverse. Thus by \autoref{lem:id_is_even}, $s+r$ is even. It follows that $r$ and $s$ are both even or both odd.
+\end{proof}
+
+\begin{definition}
+  A permutation that can be expressed as a product of an even (odd) number of transpositions is called an \textit{even} \textit{(odd)} permutation. 
+\end{definition}
+\begin{theorem}
+    The set of even permutations in $S_n$ forms a subgroup of $S_n$.
+\end{theorem}
+\begin{proof}
+  We use the One-Step Subgroup Test. We can write $\varepsilon = (12)(12)$, so it is in the set of even permutations. Let $\alpha$ and $\beta$ be even permutations. Note that $\beta^{-1}$ is even as well, so $\alpha \beta^{-1}$ must be even.
+\end{proof}
+
+\begin{definition}
+   The group of even permutations of $n$ symbols is denoted by $A_{n}$ and is called the \textit{alternating group of degree $n$}.
+\end{definition}
+\begin{theorem}
+    For $n\geq 2$, $A_n$ has order $n!/2$.
+\end{theorem}
+\begin{proof}
+  Let $B_n$ denote the set of odd permutations in $S_n$. For an odd permutation $\alpha$, consider the function $f:B_n\to A_n$ defined by $f(\alpha) = (12) \alpha$. By cancellation properties we have $(12) \alpha = (12) \beta$ implies $\alpha = \beta$, so $f$ is an injection; in other words $|B_n| \leq |A_n|$.
+
+  Similarly the function $g: A_n \to B_n$ defined by $g(\beta) = (12) \beta$ is an injection and so $|A_n|\leq |B_n|$. From this we conclude $|A_n| = |B_n|$ and since $|A_n|\cap |B_n| = \emptyset$, we obtain $|A_n| = n!/2$.
+\end{proof}
+
+\begin{remark}
+  The name \textit{alternating} of $A_n$ comes from polynomials where transpositions change (alternate) its sign, exactly as in the proof for \autoref{lem:id_is_even}.
+\end{remark}
+
+\section{Isomorphisms}
+\begin{definition}
+  A homomorphism $\phi: G \to \overline{G}$ is a mapping that preserves the group operation. That is,
+  \begin{equation*}
+    \phi(ab) = \phi(a) \phi(b)\qquad \text{for all $a,b$ in $G$}.
+  \end{equation*}
+\end{definition}
+There are names for special kinds of homomorphisms.
+\begin{enumerate}
+
+    \item An injective homomorphism is also called a \textit{monomorphism}
+    \item A surjective homomorphism is also called an \textit{epimorphism}
+    \item A bijective homomorphism is also called an \textit{isomorphism}
+    \item An isomorphism from a group onto itself is also called an \textit{automorphism}
+
+\end{enumerate}
+\begin{definition}
+    If there is an isomorphism $\phi: G\to \overline{G}$, we say that $G$ and $\overline{G}$ are \textit{isomorphic} and write $G\cong \overline{G}$.
+\end{definition}
+\begin{example}
+  Let $G = \cyc{a}$. If $|a|= \infty$ then $G\cong \Z$ via the isomorphism $\phi(a^{k}) = k$. On the other hand if $|a|= n<\infty$ then $G\cong \Z_{n}$ via the isomorphism $\phi(a^{k}) = k \pmod{n}$.
+\end{example}
+\begin{theorem}[Properties of Isomorphisms on Elements]
+  Let $\phi:G \to \overline{G}$ be an isomorphism. Then:
+  \begin{enumerate}
+
+    \item $\phi(e)$ is the identity of $\overline{G}$.
+    \item $\phi(a^{n}) = [\phi(a)]^{n}$.
+    \item $ab = ba$ iff $\phi(a) \phi(b) = \phi(b) \phi(a)$....
+    \item $G = \cyc{a}$ iff $\overline{G} = \cyc{\phi(a)}$.
+    \item $|a| = |\phi(a)|$.
+    \item The equation $x^{k}=b$ has the same number of solutions in $G$ as does the equation $x^{k} = \phi(b)$ in $\overline{G}$.
+    \item $G$ and $\overline{G}$ have the same number of elements of each order.
+
+  \end{enumerate}
+\end{theorem}
+\begin{theorem}[Properties of Isomorphisms on Groups]
+  Let $\phi:G \to \overline{G}$ be an isomorphism. Then:
+  \begin{enumerate}
+
+    \item $\phi^{-1}$ is an isomorphism from $\overline{G}$ onto $G$.
+    \item $G$ is Abelian iff $\overline{G}$ is Abelian.
+    \item $G$ is cyclic iff $\overline{G}$ is cyclic.
+    \item If $K$ is a subgroup of $G$, then $\phi(K)$ is a subgroup of $\overline{G}$.
+    \item $\phi(Z(G)) = Z(\overline{G})$
+
+  \end{enumerate}
+\end{theorem}
+
+\begin{theorem}[Cayley's Theorem]
+    Every finite group $G$ is isomorphic to a group of permutations. In particular,
+    \begin{equation*}
+      G \cong \Set{\pi_{g} \given g\in G}
+    \end{equation*}
+    Where $\pi_g(x):=gx $.
+\end{theorem}
+\begin{proof}
+    
+\end{proof}
+\end{document}
