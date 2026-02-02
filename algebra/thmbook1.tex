@@ -669,6 +669,37 @@ There are names for special kinds of homomorphisms.
     Where $\pi_g(x):=gx $.
 \end{theorem}
 \begin{proof}
-    
+  We will show that $\phi : G \to \overline{G}$ defined by
+  \begin{equation*}
+    \phi(g) = \pi_g(x) \equiv gx
+  \end{equation*}
+  (i.e. $g\mapsto \pi_g$) is an isomorphism. Firstly, note that for any $g\in G$, $\pi_g$ is indeed a permutation (i.e. a bijection), as for all $x,y \in G$,
+  \[
+    \pi_g(x) = \pi_g(y) \implies gx=gy \implies x = y 
+  \]
+  and hence $\pi_g$ is an injection. And for any $x\in G$ we have $\pi_g(g^{-1}x) = x$, so $\pi_g$ is surjective.
+
+  Now let us show that $\overline{G} = \Set{T_g \given g\in G}$ is a group under function composition:
+  \begin{enumerate}
+
+      \item Function composition is associative.
+      \item Let $T_{g}\in \overline{G}$. Then for all $x$ we have $T_g T_e(x) = gex = gx = egx = T_{e} T_{g}(x) = T_{g}(x)$ and so $T_{e}$ is a proper identity.
+      \item Let $T_{g} \in \overline{G}$. Then
+        \begin{equation*}
+          T_{g}T_{g^{-1}}(x) = gg^{-1}x = x =  g^{-1}gx = T_{g^{-1}}T_{g}(x) = T_{e}(x)
+        \end{equation*}
+        for all $x$ and hence each element has an inverse.
+
+  \end{enumerate}
+
+  We have shown that $\overline{G}$ is indeed a group of permutations. We now proceed to show that $\phi:G\to \overline{G}$ is an isomorphism. By construction, $\phi$ is onto. And $\phi$ is one-to-one since
+  \begin{equation*}
+    T_{g} = T_{h} \implies T_{g}(e) = T_{h}(e) \implies g = h.
+  \end{equation*}
+  We are left to show that $\phi$ is a homomorphism. Let $a,b\in G$. Then
+  \begin{equation*}
+    \phi(ab) = T_{ab} = T_{a}T_{b} = \phi(a) \phi(b).
+  \end{equation*}
 \end{proof}
+
 \end{document}
