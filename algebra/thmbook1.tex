@@ -23,6 +23,8 @@ headheight=1in
 \newcommand{\cyc}[1]{\langle {#1} \rangle}
 \newcommand{\lcm}{\mathop{\text{lcm}}}
 \newcommand{\sgn}{\mathop{\text{sgn}}}
+\newcommand{\Aut}{\mathop{\text{Aut}}}
+\newcommand{\Inn}{\mathop{\text{Inn}}}
 \title{}
 \author{Lynus Kho}
 
@@ -731,5 +733,55 @@ There are names for special kinds of homomorphisms.
     Let $a\in G$ with $|a|=2$. Viewing $G$ as a group of permutations, observe that since $\pi_a^{2} = e$, the permutation $\pi_a$ written in disjoint cycle form consists solely of transpositions. We cannot have a $1$-cycle, since that would imply $\pi_a$ sends an element to itself, which means $a=e$, a contradiction.
 
     Thus, $\pi_a$ consists of $n$ transpositions, which means it is an odd permutation. Define $A:= \Set{\sigma\in \overline{G} \given \text{ $\sigma$ is even}}$ and $B:= \Set{\tau\in \overline{G} \given \text{ $\tau$ is odd}}$, the sets of odd and even permutations in $\overline{G}$. Then the mapping $\sigma \mapsto \pi_a \sigma$ is an injection from $A$ to $B$ and $\tau \mapsto \pi_{a} \tau$ is an injection from $B$ to $A$. Therefore, $|A| = |B| = n$ and in fact $A$ is a subgroup of order $n$, as desired.
+\end{proof}
+
+\begin{definition}
+    Let $g\in G$ be a group element. The map $\alpha_g$ defined by
+    \begin{equation*}
+      \alpha_g(x) := gxg^{-1}\qquad \text{ for all $x$ in $G$}
+    \end{equation*}
+    is called the \textit{conjugation of $G$} or the \textit{inner automorphism of $G$ induced by $g$}.
+\end{definition}
+\begin{theorem}
+    $\alpha_g$ is indeed an automorphism.
+\end{theorem}
+\begin{definition}
+  When $G$ is a group, we use $\Aut(G)$ to denote the set of all automorphisms of $G$. We use $\Inn(G)$ to denote the set of all inner automorphisms of $G$.
+\end{definition}
+\begin{theorem}
+  The sets $\Aut(G)$ and $\Inn(G)$ are groups under the operation of function composition.
+\end{theorem}
+\begin{theorem}\label{thm:aut_zn_det_by_1}
+  Let $\alpha$ be an automorphism of a cyclic group $\cyc{a}$. Then $\alpha$ is completely determined by $\alpha(a)$.
+\end{theorem}
+\begin{proof}
+  Observe that for any $g^{k}\in \cyc{g}$,
+  \begin{equation*}
+    \alpha(g^{k}) = \underbrace{\alpha(g)\alpha(g)\dots\alpha(g)}_{\text{$k$ terms}} = [\alpha(g)]^{k}.
+  \end{equation*}
+\end{proof}
+\begin{theorem}
+  For every $n\in\Z^{+}$, we have $\Aut(\Z_{n}) \cong U(n)$.
+\end{theorem}
+\begin{proof}
+  By \autoref{thm:aut_zn_det_by_1}, any automorphism $\alpha$ of $\Z_n$ is determined by the value of $\alpha(1)$, and $\alpha(1) \in U(n)$ since only elements of $U(n)$ function as generators. Let us show that $T: \Aut(\Z_n) \to U(n)$ determined by
+  \begin{equation*}
+    T(\alpha) = \alpha(1)
+  \end{equation*}
+  is an isomorphism. It is injective, for if $\alpha,\beta \in \Aut(\Z_n)$ and $\alpha(1) = \beta(1)$, then $\alpha(k) =k \alpha(1) = k \beta(1) = \beta(k)$. It is surjective, since for any $r\in U(n)$ take the function $\alpha: \Z_n \to \Z_n$ defined by
+  \begin{equation*}
+    \alpha(s) := sr\pmod{n}
+  \end{equation*}
+  which is indeed an automorphism because we recognize $\alpha^{-1} := sr^{-1}\pmod{n}$ is its inverse (it is important here that $r\in U(n)$ so that $r^{-1}$ is well-defined.) We have $T(\alpha) = \alpha(1) = r$, showing that $T$ is onto.
+
+  Finally we establish that $T$ is operation-preserving. Let $\alpha,\beta\in \Aut(\Z_n)$. We then have
+  \begin{align*}
+    T(\alpha \beta) &= (\alpha \beta)(1) \\
+    &= \alpha(\beta(1)) \\
+    &= \alpha(\underbrace{1+1+\dots +1}_{\beta(1)}) \\
+    &= \underbrace{\alpha(1) + \alpha(1) + \dots + \alpha(1)}_{\beta(1)} \\
+    &= \alpha(1) \beta(1) \\
+    &= T(\alpha) T(\beta).
+  \end{align*}
 \end{proof}
 \end{document}
